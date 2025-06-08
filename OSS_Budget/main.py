@@ -1,4 +1,5 @@
-from budget import Budget 
+from budget import Budget
+import datetime
 
 #사용자 인터페이스를 제공하고 budget 클래스의 메소드를 호출하여 가계뿌 기능을 실해
 def main(): 
@@ -9,7 +10,8 @@ def main():
         print("1. 지출 추가")
         print("2. 지출 목록 보기")
         print("3. 총 지출 보기")
-        print("4. 종료")
+        print("4. 기간 지정하여 검색")
+        print("5. 종료")
         choice = input("선택 > ") 
 
         if choice == "1":
@@ -29,6 +31,19 @@ def main():
             budget.total_spent()
 
         elif choice == "4":
+            start_date_str = input("시작 날짜를 입력하세요 (YYYY-MM-DD): ")
+            end_date_str = input("종료 날짜를 입력하세요 (YYYY-MM-DD): ")
+            
+            try:
+                start_date = datetime.date.fromisoformat(start_date_str)
+                end_date = datetime.date.fromisoformat(end_date_str)
+                
+                budget.list_expenses(start_date=start_date, end_date=end_date)
+                
+            except ValueError:
+                print("오류: 날짜 형식이 잘못되었습니다. YYYY-MM-DD 형식으로 입력해주세요.\n")
+
+        elif choice == "5":
             print("가계부를 종료합니다.")
             break
 

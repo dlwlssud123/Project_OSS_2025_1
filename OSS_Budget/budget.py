@@ -1,5 +1,6 @@
 import datetime 
 from expense import Expense
+import datetime
 import csv #csv 모듈 불러오기
 #여러 expense 객체를 관리하고 가계부의 주요기능을 수행
 class Budget: 
@@ -15,14 +16,27 @@ class Budget:
         self.save_expenses() #지출추가후 바로 파일에 저장
         print("지출이 추가되고 저장되었습니다.\n")
 
-    def list_expenses(self): #현재까지 추가된 모든 지출내역을 번호를 매겨 출력
-        if not self.expenses: #지출 내역이 없을때 출력
+    def list_expenses(self, start_date = None, end_date = None): 
+        #현재까지 추가된 모든 지출내역을 번호를 매겨 출력
+        #start date와 end date가 주어지면 해당 기간으로 필터링하여 출력
+        items_to_display = self.expenses
+
+        #사용자 지정 날짜가 있는경우에만 필터링 수행
+        if start_date and end_date:
+            items_to_display = [
+                e for e in items_to_display
+                if start_date <= datetime.date.fromisoformat(e.date) <= end_date
+            ]
+
+        if not items_to_display: #지출 내역이 없을때 출력
             print("지출 내역이 없습니다.\n")
             return
+
         print("\n[지출 목록]")
-        for idx, e in enumerate(self.expenses, 1):
+        for idx, e in enumerate(items_to_display, 1):
             print(f"{idx}. {e}")
-        print()
+        
+            print() #목록 출력 후 한줄 띄우기
 
     def total_spent(self): #현재까지의 모든 지출금액의 합계를 출력
         total = sum(e.amount for e in self.expenses)
