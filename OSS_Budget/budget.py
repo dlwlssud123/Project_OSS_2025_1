@@ -36,7 +36,7 @@ class Budget:
                     #파일에서 읽은 데이터로 exnpense 객체 생성
                     #row -> [date, category, description, amount]
                     expense = Expense(row[0], row[1], row[2], int(row[3]))
-                    self.expense.append(expense)
+                    self.expenses.append(expense)
         except FileNotFoundError:
             #파일이 없으면 처음 실행으로 돌아가기
             return
